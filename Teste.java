@@ -1,3 +1,14 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Teste {
 
@@ -6,9 +17,155 @@ public class Teste {
     private static BDVeiculos bdVeiculos = new BDVeiculos();
     private static float velocidadePadraoPasseio = 100;
     private static float velocidadePadraoCarga = 90;
+    private static Color corVerde = new Color(40, 190, 37);
+    private static Color corAzul = new Color(37, 150, 190);
+    private static Color corVermelho = new Color(194, 76, 76);
+    private static ImageIcon iconVerde = createColorIcon(corVerde);
+    private static ImageIcon iconAzul = createColorIcon(corAzul);
+    private static ImageIcon iconVermelho = createColorIcon(corVermelho);
+    private static JFrame telaPrincipal;
 
     public static void main(String[] args) {
-        iniciarSistema();
+        criaJanelaPrincipal();
+    }
+
+    private static void criaJanelaPrincipal() {
+        int largura = 500;
+        int altura = 250;
+
+        JFrame telaPrincipal = criaJanela("Gestão de Veículos", largura, altura);
+        telaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JLabel linkPasseio = criaMenuItem(iconAzul, "Passeio", corAzul, criaJanelaMenuPasseio(telaPrincipal), telaPrincipal);
+        JLabel linkCarga = criaMenuItem(iconVerde, "Carga", corVerde, criaJanelaMenuCarga(telaPrincipal), telaPrincipal);
+        JPanel menu = criaMenu(Arrays.asList(linkPasseio, linkCarga));
+        telaPrincipal.add(menu, BorderLayout.CENTER);
+        telaPrincipal.setVisible(true);
+    }
+
+    private static JPanel criaMenu(List<JLabel> itemsMenu) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(0,1, 10, 10));
+
+        for (JLabel item: itemsMenu) {
+            panel.add(item);
+        }
+
+        return panel;
+    }
+
+    private static ImageIcon createColorIcon(Color color) {
+        BufferedImage img = new BufferedImage(25, 20, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = img.createGraphics();
+        g.setColor(color);
+        g.fillRect(0, 0, 25, 20);
+        g.dispose();
+        return new ImageIcon(img);
+    }
+
+    private static JFrame criaJanela(String titulo, int largura, int altura){
+        JFrame janela = new JFrame();
+        janela.setTitle(titulo);
+        janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        janela.setLayout(new FlowLayout(FlowLayout.LEADING, 50, 40));
+        janela.setLocationRelativeTo(null);
+        janela.setSize(largura, altura);
+        return janela;
+    }
+
+    private static JFrame criaJanelaMenuCarga(JFrame janelaRetorno) {
+        JFrame janela = criaJanela("Veículos de Carga", 500,300);
+        JLabel linkCadastrar = criaMenuItem(iconVerde, "Cadastrar", corVerde, new JFrame(), new JFrame());
+        JLabel linkConsultarExcluirPlaca = criaMenuItem(iconVerde, "Consultar/Excluir pela placa", corVerde, new JFrame(), new JFrame());
+        JLabel linkImprimirExcluirTodos = criaMenuItem(iconVerde, "Imprimir/Excluir todos", corVerde, new JFrame(), new JFrame());
+        JLabel linkSair = criaMenuItem(iconVermelho, "Sair", corVermelho, janelaRetorno, janela);
+        JPanel menu = criaMenu(Arrays.asList(linkCadastrar, linkConsultarExcluirPlaca, linkImprimirExcluirTodos, linkSair));
+
+        janela.add(menu, BorderLayout.CENTER);
+        janela.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                janelaRetorno.setVisible(true);
+            }
+        });
+        return janela;
+    }
+
+    private static JFrame criaJanelaMenuPasseio(JFrame janelaRetorno) {
+        JFrame janela = criaJanela("Veículos de Passeio", 500,300);
+        JLabel linkCadastrar = criaMenuItem(iconAzul, "Cadastrar", corAzul, cadastroPasseio(janela), janela);
+        JLabel linkConsultarExcluirPlaca = criaMenuItem(iconAzul, "Consultar/Excluir pela placa", corAzul, new JFrame(), janela);
+        JLabel linkImprimirExcluirTodos = criaMenuItem(iconAzul, "Imprimir/Excluir todos", corAzul, new JFrame(), janela);
+        JLabel linkSair = criaMenuItem(iconVermelho, "Sair", corVermelho, janelaRetorno, janela);
+        JPanel menu = criaMenu(Arrays.asList(linkCadastrar, linkConsultarExcluirPlaca, linkImprimirExcluirTodos, linkSair));
+        janela.add(menu, BorderLayout.CENTER);
+        janela.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                janelaRetorno.setVisible(true);
+            }
+        });
+        return janela;
+    }
+
+    private static JFrame cadastroPasseio(JFrame janelaRetorno) {
+        JFrame janela = criaJanela("Cadastro de Passeio", 500, 600);
+        Map<String, JTextField> campos = new HashMap<>();
+
+        JTextField text = new JTextField();
+        text.setPreferredSize(new Dimension(200, 20));
+
+        campos.put("Tara", text);
+
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new CardLayout());
+
+
+        for (String key: campos.keySet()) {
+            JLabel label = new JLabel(key);
+            campos.get(key).setHorizontalAlignment(2);
+            panel.add(label);
+            panel.add(campos.get(key));
+        }
+        janela.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                janelaRetorno.setVisible(true);
+            }
+        });
+
+        janela.add(panel);
+        return janela;
+
+
+    }
+
+    private static JLabel criaMenuItem(ImageIcon icon, String nome, Color hoverColor, JFrame entraJanela, JFrame sairJanela) {
+        JLabel link = new JLabel();
+        link.setIcon(icon);
+        link.setText(nome);
+        link.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        link.setIconTextGap(10);
+        link.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                sairJanela.setVisible(false);
+                entraJanela.setVisible(true);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                link.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                link.setForeground(hoverColor);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                link.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                link.setForeground(null);
+            }
+        });
+        return link;
     }
 
     public static void iniciarSistema() {
