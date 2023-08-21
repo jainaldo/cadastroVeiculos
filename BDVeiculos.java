@@ -5,17 +5,19 @@ public class BDVeiculos {
     private List<Passeio> listaPasseio = new ArrayList<Passeio>();
     private List<Carga> listaCarga = new ArrayList<Carga>();
 
-    public Passeio existePlacaPasseio(Passeio novoPasseio) throws VeicExistException {
-        Passeio passeioExiste = buscarPasseio(novoPasseio);
-        if (passeioExiste != null) {
-            throw new VeicExistException("passeio", novoPasseio.getPlaca());
+    public Passeio criarPasseio(String placa) throws VeicExistException {
+        Passeio passeio = buscarPasseio(placa);
+        if (passeio != null) {
+            throw new VeicExistException("passeio", placa);
         }
-        return novoPasseio;
+        passeio = new Passeio();
+        passeio.setPlaca(placa);
+        return passeio;
     }
 
-    public Passeio buscarPasseio(Passeio passeioProcurado) {
+    public Passeio buscarPasseio(String placa) {
         for (Passeio passeio : listaPasseio) {
-            if (passeio.getPlaca().equalsIgnoreCase(passeioProcurado.getPlaca())) {
+            if (passeio.getPlaca().equalsIgnoreCase(placa)) {
                 return passeio;
             }
         }
