@@ -25,6 +25,7 @@ public class Teste {
     private static JFrame telaPrincipal;
     private static JFrame telaMenuPasseio;
     private static JFrame telaCadastrarPasseio;
+    private static JFrame telaConsultarExcluirPasseio;
 
     private static JLabel lQtdPassageiros = new JLabel("Qtd. Passageiros:");
     private static JLabel lPlaca = new JLabel("Placa:");
@@ -35,6 +36,7 @@ public class Teste {
     private static JLabel lVelocidadeMax = new JLabel("Velocidade Max:");
     private static JLabel lQtdPistoes = new JLabel("Qtd. Pistões:");
     private static JLabel lPotencia = new JLabel("Potência:");
+    private static JLabel lInformePlaca = new JLabel("Informe a Placa:");
 
     private static JTextField textQtdPassageiros = new JTextField();
     private static JTextField textPlaca = new JTextField();
@@ -45,8 +47,12 @@ public class Teste {
     private static JTextField textVelocidadeMax = new JTextField();
     private static JTextField textQtdPistoes = new JTextField();
     private static JTextField textPotencia = new JTextField();
+    private static JTextField textInformePlaca = new JTextField();
 
     private static JButton bLimparCamposPasseio = new JButton("Limpar");
+    private static JPanel panelCampos = new JPanel();
+    private static JPanel panelButoes = new JPanel();
+
 
 
     public static void main(String[] args) {
@@ -54,90 +60,257 @@ public class Teste {
     }
 
     private static JFrame getTelaPrincipal() {
-        if (telaPrincipal == null) {
-            int largura = 500;
-            int altura = 250;
-            telaPrincipal = criaJanela("Gestão de Veículos", largura, altura);
-            telaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            JLabel linkPasseio = criaMenuItem(iconAzul, "Passeio");
-            linkPasseio.addMouseListener(criaMouseListener(linkPasseio, corAzul, telaPrincipal, getTelaMenuPasseio()));
+        int largura = 500;
+        int altura = 250;
+        telaPrincipal = criaJanela("Gestão de Veículos", largura, altura);
+        telaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JLabel linkPasseio = criaMenuItem(iconAzul, "Passeio");
+        linkPasseio.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                navegar(telaPrincipal, getTelaMenuPasseio());
+            }
 
-            JPanel menu = criaMenu(Arrays.asList(linkPasseio));
-            telaPrincipal.add(menu, BorderLayout.CENTER);
-        }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                mudaCorLink(linkPasseio, corAzul, Cursor.HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                mudaCorLink(linkPasseio, null, Cursor.DEFAULT_CURSOR);
+            }
+        });
+
+        JPanel menu = criaMenu(Arrays.asList(linkPasseio));
+        telaPrincipal.add(menu, BorderLayout.CENTER);
         return telaPrincipal;
     }
 
     private static JFrame getTelaMenuPasseio() {
-        if (telaMenuPasseio == null) {
-            int largura = 500;
-            int altura = 300;
-            telaMenuPasseio = criaJanela("Veículos de Passeio", largura,altura);
-            telaMenuPasseio.addWindowListener(criarWindowListener(getTelaPrincipal()));
+        int largura = 500;
+        int altura = 300;
+        telaMenuPasseio = criaJanela("Veículos de Passeio", largura, altura);
+        telaMenuPasseio.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                getTelaPrincipal().setVisible(true);
+            }
+        });
 
-            JLabel linkCadastrar = criaMenuItem(iconAzul, "Cadastrar");
-            linkCadastrar.addMouseListener(criaMouseListener(linkCadastrar, corAzul, telaMenuPasseio, getTelaCadastrarPasseio()));
-            JLabel linkSair = criaMenuItem(iconVermelho, "Sair");
-            linkSair.addMouseListener(criaMouseListener(linkSair, corVermelho, telaMenuPasseio, getTelaPrincipal()));
-            JPanel menu = criaMenu(Arrays.asList(linkCadastrar, linkSair));
-            telaMenuPasseio.add(menu, BorderLayout.CENTER);
-        }
+        JLabel linkCadastrar = criaMenuItem(iconAzul, "Cadastrar");
+        linkCadastrar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                navegar(telaMenuPasseio, getTelaCadastrarPasseio());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                mudaCorLink(linkCadastrar, corAzul, Cursor.HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                mudaCorLink(linkCadastrar, null, Cursor.DEFAULT_CURSOR);
+            }
+        });
+
+        JLabel linkConsultarExcluir = criaMenuItem(iconAzul, "Consultar/Excluir pela Placa");
+        linkConsultarExcluir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                navegar(telaMenuPasseio, getTelaConsultarExcluirPasseio());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                mudaCorLink(linkConsultarExcluir, corAzul, Cursor.HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                mudaCorLink(linkConsultarExcluir, null, Cursor.DEFAULT_CURSOR);
+            }
+        });
+
+        JLabel linkSair = criaMenuItem(iconVermelho, "Sair");
+        linkSair.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                navegar(telaMenuPasseio, getTelaPrincipal());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                mudaCorLink(linkSair, corVermelho, Cursor.HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                mudaCorLink(linkSair, null, Cursor.DEFAULT_CURSOR);
+            }
+        });
+
+        JPanel menu = criaMenu(Arrays.asList(linkCadastrar, linkConsultarExcluir, linkSair));
+        telaMenuPasseio.add(menu, BorderLayout.CENTER);
+
+
         return telaMenuPasseio;
     }
 
     private static JFrame getTelaCadastrarPasseio() {
 
-        if (telaCadastrarPasseio == null) {
-            int largura = 500;
-            int altura = 100;
-            telaCadastrarPasseio = criaJanela("Cadastro de Passeio", largura,altura);
-            telaCadastrarPasseio.addWindowListener(criarWindowListener(getTelaMenuPasseio()));
-            JPanel panelCampos = new JPanel();
-            panelCampos.setLayout(new GridLayout(9,2, 4, 4));
-            panelCampos.add(lQtdPassageiros);
-            panelCampos.add(textQtdPassageiros);
-            panelCampos.add(lPlaca);
-            panelCampos.add(textPlaca);
-            panelCampos.add(lMarca);
-            panelCampos.add(textMarca);
-            panelCampos.add(lModelo);
-            panelCampos.add(textModelo);
-            panelCampos.add(lCor);
-            panelCampos.add(textCor);
-            panelCampos.add(lQtdRodas);
-            panelCampos.add(textQtdRodas);
-            panelCampos.add(lVelocidadeMax);
-            panelCampos.add(textVelocidadeMax);
-            panelCampos.add(lQtdPistoes);
-            panelCampos.add(textQtdPistoes);
-            panelCampos.add(lPotencia);
-            panelCampos.add(textPotencia);
+        int largura = 500;
+        int altura = 100;
+        telaCadastrarPasseio = criaJanela("Cadastro de Passeio", largura, altura);
+        telaCadastrarPasseio.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                getTelaMenuPasseio().setVisible(true);
+            }
+        });
 
-            JPanel panelButoes = new JPanel();
-            panelButoes.setLayout(new FlowLayout());
 
-            JButton bCadastrar = new JButton("Cadastrar");
-            bCadastrar.addActionListener(cadastrarPasseiroActionListener());
-            bLimparCamposPasseio.addActionListener(criaLimparCamposActionListener());
-            JButton bNovo = new JButton("Novo");
-            JButton bSair = new JButton("Sair");
-            bSair.addActionListener(criaSairActionListener(getTelaCadastrarPasseio(), getTelaMenuPasseio()));
+        panelCampos.removeAll();
+        panelCampos.setLayout(new GridLayout(9,2, 4, 4));
+        panelCampos.add(lQtdPassageiros);
+        panelCampos.add(textQtdPassageiros);
+        panelCampos.add(lPlaca);
+        panelCampos.add(textPlaca);
+        panelCampos.add(lMarca);
+        panelCampos.add(textMarca);
+        panelCampos.add(lModelo);
+        panelCampos.add(textModelo);
+        panelCampos.add(lCor);
+        panelCampos.add(textCor);
+        panelCampos.add(lQtdRodas);
+        panelCampos.add(textQtdRodas);
+        panelCampos.add(lVelocidadeMax);
+        panelCampos.add(textVelocidadeMax);
+        panelCampos.add(lQtdPistoes);
+        panelCampos.add(textQtdPistoes);
+        panelCampos.add(lPotencia);
+        panelCampos.add(textPotencia);
 
-            panelButoes.add(bCadastrar);
-            panelButoes.add(bLimparCamposPasseio);
-            panelButoes.add(bNovo);
-            panelButoes.add(bSair);
+        panelButoes.removeAll();
+        panelButoes.setLayout(new FlowLayout());
 
-            JPanel panel = new JPanel();
-            panel.setLayout(new BorderLayout());
+        JButton bCadastrar = new JButton("Cadastrar");
+        bCadastrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                cadastrarPasseio();
+            }
+        });
+        JButton bLimpar = new JButton("Limpar");
+        bLimpar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                limparCampos();
+                textQtdPassageiros.requestFocus();
+            }
+        });
+        JButton bNovo = new JButton("Novo");
+        JButton bSair = new JButton("Sair");
+        bSair.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                limparCampos();
+                navegar(telaCadastrarPasseio, getTelaMenuPasseio());
+            }
+        });
 
-            panel.add(panelCampos, BorderLayout.CENTER);
-            panel.add(panelButoes, BorderLayout.SOUTH);
+        panelButoes.add(bCadastrar);
+        panelButoes.add(bLimpar);
+        panelButoes.add(bNovo);
+        panelButoes.add(bSair);
 
-            telaCadastrarPasseio.add(panel, BorderLayout.CENTER);
-            telaCadastrarPasseio.pack();
-        }
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        panel.add(panelCampos, BorderLayout.CENTER);
+        panel.add(panelButoes, BorderLayout.SOUTH);
+
+        telaCadastrarPasseio.add(panel);
+        telaCadastrarPasseio.pack();
         return telaCadastrarPasseio;
+    }
+
+    private static JFrame getTelaConsultarExcluirPasseio() {
+        int largura = 500;
+        int altura = 100;
+
+        telaConsultarExcluirPasseio = criaJanela("Consultar/Excluir pela placa", largura, altura);
+        telaConsultarExcluirPasseio.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                getTelaMenuPasseio().setVisible(true);
+            }
+        });
+
+        panelCampos.removeAll();
+        panelCampos.setLayout(new GridLayout(9,2, 4, 4));
+
+        lInformePlaca.setForeground(corVermelho);
+        panelCampos.add(lInformePlaca);
+        panelCampos.add(textInformePlaca);
+        panelCampos.add(lQtdPassageiros);
+        panelCampos.add(textQtdPassageiros);
+        panelCampos.add(lMarca);
+        panelCampos.add(textMarca);
+        panelCampos.add(lModelo);
+        panelCampos.add(textModelo);
+        panelCampos.add(lCor);
+        panelCampos.add(textCor);
+        panelCampos.add(lQtdRodas);
+        panelCampos.add(textQtdRodas);
+        panelCampos.add(lVelocidadeMax);
+        panelCampos.add(textVelocidadeMax);
+        panelCampos.add(lQtdPistoes);
+        panelCampos.add(textQtdPistoes);
+        panelCampos.add(lPotencia);
+        panelCampos.add(textPotencia);
+
+        panelButoes.removeAll();
+        panelButoes.setLayout(new FlowLayout());
+
+        JButton bConsultar = new JButton("Consultar");
+        bConsultar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                consultarPasseio();
+            }
+        });
+        JButton bExcluir = new JButton("Excluir");
+        bExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                excluirPasseio();
+            }
+        });
+        JButton bSair = new JButton("Sair");
+        bSair.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                limparCampos();
+                navegar(telaConsultarExcluirPasseio, getTelaMenuPasseio());
+            }
+        });
+
+        panelButoes.add(bConsultar);
+        panelButoes.add(bExcluir);
+        panelButoes.add(bSair);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        panel.add(panelCampos, BorderLayout.CENTER);
+        panel.add(panelButoes, BorderLayout.SOUTH);
+
+        telaConsultarExcluirPasseio.add(panel);
+        telaConsultarExcluirPasseio.pack();
+        return telaConsultarExcluirPasseio;
     }
 
     public static void limparCampos() {
@@ -150,6 +323,7 @@ public class Teste {
         textVelocidadeMax.setText("");
         textQtdPistoes.setText("");
         textPotencia.setText("");
+        textInformePlaca.setText("");
     }
 
     private static ActionListener criaLimparCamposActionListener() {
@@ -184,7 +358,8 @@ public class Teste {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 limparCampos();
-                navegar(origem, destino);
+//                panelCampos.removeAll();
+//                navegar(destino);
             }
         };
     }
@@ -229,7 +404,7 @@ public class Teste {
         };
     }
 
-    public static void navegar(JFrame origem, JFrame destino) {
+    public static void navegar(JFrame origem,JFrame destino) {
         origem.dispose();
         destino.setVisible(true);
     }
@@ -239,11 +414,11 @@ public class Teste {
         link.setForeground(cor);
     }
 
-    private static MouseListener criaMouseListener(JLabel link, Color cor, JFrame origem, JFrame destino) {
+    private static MouseListener criaMouseListener(JLabel link, Color cor, JFrame destino) {
         return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                navegar(origem, destino);
+//                navegar(destino);
             }
 
             @Override
@@ -351,15 +526,15 @@ public class Teste {
             campoInvalido(textQtdPistoes, "Deve informar a Qtd. Pistões.");
         } else if (textPotencia.getText().isBlank()) {
             campoInvalido(textPotencia, "Deve informar a Potência.");
-        } else if (!numeroValido(textQtdPassageiros.getText())) {
+        } else if (validaNumero(textQtdPassageiros.getText())) {
             campoInvalido(textQtdPassageiros, "Deve informar um número para Qtd. Passageiros");
-        } else if (!numeroValido(textQtdRodas.getText())){
+        } else if (validaNumero(textQtdRodas.getText())){
             campoInvalido(textQtdRodas, "Deve informar um número para Qtd. Rodas.");
         } else if (!floatValido(textVelocidadeMax.getText())) {
             campoInvalido(textVelocidadeMax, "Deve informar um número para Velocidade Max.");
-        } else if (!numeroValido(textQtdPistoes.getText())) {
+        } else if (validaNumero(textQtdPistoes.getText())) {
             campoInvalido(textQtdPistoes, "Deve informar um número para Qtd. Pistões.");
-        } else if (!numeroValido(textPotencia.getText())) {
+        } else if (validaNumero(textPotencia.getText())) {
             campoInvalido(textPotencia, "Deve informar um número para Potência");
         } else {
             try {
@@ -391,53 +566,68 @@ public class Teste {
                 campoInvalido(textPlaca, ve.getMessage());
             }
         }
-
-
-
-
-//        try {
-//            novoPasseio.setPlaca(leitura.entDados("Placa:"));
-//            novoPasseio = bdVeiculos.criarPasseio(novoPasseio);
-//        } catch (VeicExistException e) {
-//            return;
-//        }
-//
-//        novoPasseio.setMarca(leitura.entDados("Marca:"));
-//        novoPasseio.setModelo(leitura.entDados("Modelo:"));
-//        novoPasseio.setCor(leitura.entDados("Cor:"));
-//        novoPasseio.setQtdRodas(Integer.parseInt(leitura.entDados("Quantidade de Rodas:")));
-//        novoPasseio.setQtdPassageiros(Integer.parseInt(leitura.entDados("Capacidade de Passageiros:")));
-//
-//        try {
-//            novoPasseio.setVelocMax(Float.parseFloat(leitura.entDados("Velocidade Maxima:")));
-//        } catch (VelocException ve) {
-//            try {
-//                novoPasseio.setVelocMax(velocidadePadraoPasseio);
-//            } catch (VelocException e) {
-//                System.out.println("Erro no Sistema");
-//            }
-//        }
-//
-//        novoPasseio.getMotor().setPotencia(Integer.parseInt(leitura.entDados("Potencia do Motor:")));
-//        novoPasseio.getMotor().setQtdPist(Integer.parseInt(leitura.entDados("Qtd Pistoes do Motor:")));
-//
-//        bdVeiculos.adicionarPasseio(novoPasseio);
-//
-//        informe(TipoInforme.SUCESSO, "Veiculo cadastrado com sucesso!");
-//
-//        String resposta = leitura.entDados("\nDeseja adicionar mais veiculo de passeio? (S/N)");
-//
-//        if (resposta.equalsIgnoreCase("s")) {
-//            adicionarPasseio();
-//        }
     }
 
-    private static boolean numeroValido(String texto) {
+    public static void consultarPasseio() {
+        if (textInformePlaca.getText().isBlank()) {
+            campoInvalido(textInformePlaca, "Deve informar a placa");
+        } else {
+            Passeio passeio = bdVeiculos.buscarPasseio(textInformePlaca.getText());
+
+            if (passeio == null) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Não foi encontrado veiculo de passeio com esta placa.",
+                        "Veiculo não encontrado",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                textQtdPassageiros.setText(Integer.toString(passeio.getQtdPassageiros()));
+                textMarca.setText(passeio.getMarca());
+                textModelo.setText(passeio.getModelo());
+                textCor.setText(passeio.getCor());
+                textQtdRodas.setText(Integer.toString(passeio.getQtdRodas()));
+                textVelocidadeMax.setText(Float.toString(passeio.getVelocMax()));
+                textQtdPistoes.setText(Integer.toString(passeio.getMotor().getQtdPist()));
+                textPotencia.setText(Integer.toString(passeio.getMotor().getPotencia()));
+            }
+        }
+    }
+
+    private static void excluirPasseio() {
+        if (textInformePlaca.getText().isBlank()) {
+            campoInvalido(textInformePlaca, "Deve informar a placa");
+        } else {
+            Passeio passeio = bdVeiculos.buscarPasseio(textInformePlaca.getText());
+
+            if (passeio == null) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        String.format("Não foi encontrado veiculo de passeio com esta placa: %s.", textInformePlaca.getText()),
+                        "Veiculo não encontrado",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                int opcao = JOptionPane.showInternalConfirmDialog(
+                        null,
+                        String.format("Tem certeza que deseja excluir o veiculo de passeio de placa: %s ? ", textInformePlaca.getText()),
+                        "Confirmação da exclusão",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+                if (opcao == 0) {
+                    bdVeiculos.excluirPasseio(passeio);
+                    JOptionPane.showMessageDialog(null, "Veiculo excluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+
+    }
+
+    private static boolean validaNumero(String texto) {
         try {
             Integer.parseInt(texto);
-            return true;
-        }catch (NumberFormatException e){
             return false;
+        }catch (NumberFormatException e){
+            return true;
         }
     }
 
@@ -531,20 +721,7 @@ public class Teste {
 //        informe(TipoInforme.SUCESSO, "A impressão de todos os veiculos de carga foi concluida!");
 //    }
 //
-//    public static void imprimePasseioPelaPlaca() {
-//        System.out.println("\n============== PESQUISAR VEICULO PASSEIO ===========");
-//        Passeio passeio = new Passeio();
-//        passeio.setPlaca(leitura.entDados("Informe a placa que deseja pesquisar:"));
-//        passeio = bdVeiculos.buscarPasseio(passeio);
 //
-//        if (passeio == null) {
-//            informe(TipoInforme.ATENCAO, "Não foi encontrado veiculo de passeio com esta placa.");
-//            return;
-//        }
-//
-//        bdVeiculos.imprimePasseio(passeio);
-//        informe(TipoInforme.SUCESSO, "A impressão do veiculo de passeio foi concluida!");
-//    }
 //
 //    public static void imprimeCargaPelaPlaca() {
 //        System.out.println("\n============== PESQUISAR VEICULO CARGA ===========");
@@ -561,20 +738,7 @@ public class Teste {
 //        informe(TipoInforme.SUCESSO, "A impressão do veiculo de carga foi concluida!");
 //    }
 //
-//    private static void excluirPasseioPelaPlaca() {
-//        System.out.println("\n============== EXCLUIR VEICULO PASSEIO ===========");
-//        Passeio passeio = new Passeio();
-//        passeio.setPlaca(leitura.entDados("Informe a placa que deseja excluir:"));
-//        passeio = bdVeiculos.buscarPasseio(passeio);
 //
-//        if (passeio == null) {
-//            informe(TipoInforme.ATENCAO, "Não foi encontrado veiculo de passeio com esta placa.");
-//            return;
-//        }
-//
-//        bdVeiculos.excluirPasseio(passeio);
-//        informe(TipoInforme.SUCESSO, "O veiculo de passeio foi excluido!");
-//    }
 //
 //    private static void excluirCargaPelaPlaca() {
 //        System.out.println("\n============== EXCLUIR VEICULO CARGA ===========");
