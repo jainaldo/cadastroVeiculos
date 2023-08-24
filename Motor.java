@@ -7,19 +7,19 @@ public class Motor {
         potencia = 0;
     }
 
-    public void setPotencia(int potencia) {
+    public final void setPotencia(int potencia) {
         this.potencia = potencia;
     }
 
-    public void setQtdPist(int qtdPist) {
+    public final void setQtdPist(int qtdPist) {
         this.qtdPist = qtdPist;
     }
 
-    public int getPotencia() {
+    public final int getPotencia() {
         return potencia;
     }
 
-    public int getQtdPist() {
+    public final int getQtdPist() {
         return qtdPist;
     }
 }
