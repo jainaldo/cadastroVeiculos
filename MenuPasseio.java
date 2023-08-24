@@ -62,11 +62,34 @@ public class MenuPasseio extends JFrame {
             }
         });
 
+        JLabel linkImprimirExcluirTodos = new JLabel();
+        linkImprimirExcluirTodos.setIcon(Util.ICON_AZUL);
+        linkImprimirExcluirTodos.setText("Imprimir/Excluir todos");
+        linkImprimirExcluirTodos.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        linkImprimirExcluirTodos.setIconTextGap(10);
+        linkImprimirExcluirTodos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                imprimirExcluirTodos();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Util.mudaCorLink(linkImprimirExcluirTodos, Util.COR_AZUL, Cursor.HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                Util.mudaCorLink(linkImprimirExcluirTodos, null, Cursor.DEFAULT_CURSOR);
+            }
+        });
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4,1));
         panel.setBorder(new EmptyBorder(20, 40, 20, 40 ));
         panel.add(linkCadastrar);
         panel.add(linkConsultarExcluir);
+        panel.add(linkImprimirExcluirTodos);
         add(panel);
     }
 
@@ -83,5 +106,9 @@ public class MenuPasseio extends JFrame {
 
     private void consultarExcluir() {
         ConsultarExcluirPasseio.getConsultarExcluirPasseio().setVisible(true);
+    }
+
+    private void imprimirExcluirTodos() {
+        ImprimirExcluirTodosPasseio.getImprimirExcluirTodosPasseio().setVisible(true);
     }
 }

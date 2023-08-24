@@ -106,7 +106,7 @@ public class CadastroPasseio extends JFrame {
 
     private void cadastrarPasseio() {
         if (textQtdPassageiros.getText().isBlank() || !Util.numeroValido(textQtdPassageiros.getText())) {
-            Util.notificar(textQtdPassageiros, "Deve informar um número para Qtd. Passageiros");
+            Util.notificar(textQtdPassageiros, "Deve informar um número para Qtd. Passageiros.");
         } else if (textPlaca.getText().isBlank()) {
             Util.notificar(textPlaca, "Deve informar a Placa.");
         } else if (textMarca.getText().isBlank()) {
@@ -122,7 +122,7 @@ public class CadastroPasseio extends JFrame {
         } else if (textQtdPistoes.getText().isBlank() || !Util.numeroValido(textQtdPistoes.getText())) {
             Util.notificar(textQtdPistoes, "Deve informar um número para Qtd. Pistões.");
         } else if (textPotencia.getText().isBlank() || !Util.numeroValido(textPotencia.getText())) {
-            Util.notificar(textPotencia, "Deve informar um número para Potência");
+            Util.notificar(textPotencia, "Deve informar um número para Potência.");
         } else {
             try {
                 Passeio novoPasseio = new Passeio();

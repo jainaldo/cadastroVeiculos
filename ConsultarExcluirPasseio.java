@@ -70,7 +70,7 @@ public class ConsultarExcluirPasseio extends JFrame {
         bConsultar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                consultarPasseio();
+                consultar();
             }
         });
 
@@ -78,7 +78,7 @@ public class ConsultarExcluirPasseio extends JFrame {
         bExcluir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                excluirPasseio();
+                excluir();
             }
         });
 
@@ -112,9 +112,9 @@ public class ConsultarExcluirPasseio extends JFrame {
         return janela;
     }
 
-    private void consultarPasseio() {
+    private void consultar() {
         if (textPlaca.getText().isBlank()) {
-            Util.notificar(textPlaca, "Deve informar a placa");
+            Util.notificar(textPlaca, "Deve informar a placa.");
         } else {
             Passeio passeio = new Passeio();
             passeio.setPlaca(textPlaca.getText());
@@ -122,8 +122,8 @@ public class ConsultarExcluirPasseio extends JFrame {
 
             if (passeio == null) {
                 Util.notificar(
-                        "Veiculo não encontrado",
-                        String.format("Não foi encontrado veiculo de passeio com esta placa: %s.", textPlaca.getText()),
+                        "Veículo não encontrado",
+                        String.format("Não foi encontrado veículo de passeio com esta placa: %s.", textPlaca.getText()),
                         JOptionPane.INFORMATION_MESSAGE
                 );
             } else {
@@ -140,9 +140,9 @@ public class ConsultarExcluirPasseio extends JFrame {
         }
     }
 
-    private void excluirPasseio() {
+    private void excluir() {
         if (textPlaca.getText().isBlank()) {
-            Util.notificar(textPlaca, "Deve informar a placa");
+            Util.notificar(textPlaca, "Deve informar a placa.");
         } else {
             Passeio passeio = new Passeio();
             passeio.setPlaca(textPlaca.getText());
@@ -151,13 +151,13 @@ public class ConsultarExcluirPasseio extends JFrame {
             if (passeio == null) {
                 Util.notificar(
                         "Veiculo não encontrado",
-                        String.format("Não foi encontrado veiculo de passeio com esta placa: %s.", textPlaca.getText()),
+                        String.format("Não foi encontrado veículo de passeio com esta placa: %s.", textPlaca.getText()),
                         JOptionPane.INFORMATION_MESSAGE
                 );
             } else {
                 int resp = Util.confirmar(
                         "Excluir",
-                        String.format("Tem certeza que deseja excluir o veiculo de passeio de placa: %s ? ", textPlaca.getText())
+                        String.format("Tem certeza que deseja excluir o veículo de passeio de placa: %s ?", textPlaca.getText())
                 );
                 if (resp == 0) {
                     BDVeiculos.getDBVeiculos().excluirPasseio(passeio);

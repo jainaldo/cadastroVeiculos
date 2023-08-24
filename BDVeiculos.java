@@ -119,4 +119,8 @@ public class BDVeiculos {
     public List<Passeio> getListaPasseio() {
         return listaPasseio;
     }
+
+    public void excluirTodosPasseio() {
+        listaPasseio = new ArrayList<Passeio>();
+    }
 }

@@ -614,7 +614,7 @@ public class Teste {
             if (passeio == null) {
                 JOptionPane.showMessageDialog(
                         null,
-                        "Não foi encontrado veiculo de passeio com esta placa.",
+                        "Não foi encontrado veículo de passeio com esta placa.",
                         "Veiculo não encontrado",
                         JOptionPane.INFORMATION_MESSAGE);
             } else {
@@ -641,13 +641,13 @@ public class Teste {
             if (passeio == null) {
                 JOptionPane.showMessageDialog(
                         null,
-                        String.format("Não foi encontrado veiculo de passeio com esta placa: %s.", textInformePlaca.getText()),
+                        String.format("Não foi encontrado veículo de passeio com esta placa: %s.", textInformePlaca.getText()),
                         "Veiculo não encontrado",
                         JOptionPane.INFORMATION_MESSAGE);
             } else {
                 int opcao = JOptionPane.showInternalConfirmDialog(
                         null,
-                        String.format("Tem certeza que deseja excluir o veiculo de passeio de placa: %s ? ", textInformePlaca.getText()),
+                        String.format("Tem certeza que deseja excluir o veículo de passeio de placa: %s ? ", textInformePlaca.getText()),
                         "Confirmação da exclusão",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE
