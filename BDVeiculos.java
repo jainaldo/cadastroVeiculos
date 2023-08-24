@@ -2,30 +2,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BDVeiculos {
-    private List<Passeio> listaPasseio = new ArrayList<Passeio>();
-    private List<Carga> listaCarga = new ArrayList<Carga>();
+    private List<Passeio> listaPasseio;
+    private List<Carga> listaCarga;
 
-    public Passeio criarPasseio(String placa) throws VeicExistException {
-        Passeio passeio = buscarPasseio(placa);
-        if (passeio != null) {
-            throw new VeicExistException("passeio", placa);
-        }
-        passeio = new Passeio();
-        passeio.setPlaca(placa);
-        return passeio;
+    private static BDVeiculos geraDBVeiculosUnico;
+    private BDVeiculos() {
+        listaPasseio = new ArrayList<Passeio>();
+        listaCarga = new ArrayList<Carga>();
     }
 
-    public Passeio buscarPasseio(String placa) {
+    public static BDVeiculos getDBVeiculos() {
+        if (geraDBVeiculosUnico == null) {
+            geraDBVeiculosUnico = new BDVeiculos();
+        }
+        return geraDBVeiculosUnico;
+    }
+
+    public Passeio buscarPasseio(Passeio passeioProcurado) {
         for (Passeio passeio : listaPasseio) {
-            if (passeio.getPlaca().equalsIgnoreCase(placa)) {
+            if (passeio.getPlaca().equalsIgnoreCase(passeioProcurado.getPlaca())) {
                 return passeio;
             }
         }
         return null;
     }
 
-    public void adicionarPasseio(Passeio novoPasseio){
+    public Passeio adicionarPasseio(Passeio novoPasseio) throws VeicExistException {
+        Passeio passeio = buscarPasseio(novoPasseio);
+        if (passeio != null){
+            throw new VeicExistException("passeio", novoPasseio.getPlaca());
+        }
         listaPasseio.add(novoPasseio);
+        return novoPasseio;
     }
 
     public Carga existePlacaCarga(Carga novaCarga) throws VeicExistException {
@@ -106,5 +114,9 @@ public class BDVeiculos {
 
     public void excluirCarga(Carga carga) {
         listaCarga.remove(carga);
+    }
+
+    public List<Passeio> getListaPasseio() {
+        return listaPasseio;
     }
 }
