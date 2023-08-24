@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BDVeiculos {
     private List<Passeio> listaPasseio;
@@ -53,8 +54,13 @@ public class BDVeiculos {
         return null;
     }
 
-    public void adicionarCarga(Carga novaCarga){
+    public Carga adicionarCarga(Carga novaCarga) throws VeicExistException {
+        Carga carga = buscarCarga(novaCarga);
+        if (carga != null){
+            throw new VeicExistException("carga", novaCarga.getPlaca());
+        }
         listaCarga.add(novaCarga);
+        return novaCarga;
     }
 
     public void imprimeTodosPasseios() {
@@ -122,5 +128,13 @@ public class BDVeiculos {
 
     public void excluirTodosPasseio() {
         listaPasseio = new ArrayList<Passeio>();
+    }
+
+    public List<Carga> getListaCarga() {
+        return listaCarga;
+    }
+
+    public void excluirTodosCarga() {
+        listaCarga = new ArrayList<Carga>();
     }
 }

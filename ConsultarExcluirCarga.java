@@ -4,9 +4,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ConsultarExcluirPasseio extends JFrame {
-    private static ConsultarExcluirPasseio janela;
-    private JLabel lQtdPassageiros = new JLabel("Qtd. Passageiros:");
+public class ConsultarExcluirCarga extends JFrame {
+    private static ConsultarExcluirCarga janela;
+    private JLabel lTara = new JLabel("Tara:");
+    private JLabel lCargaMax = new JLabel("Carga Máx:");
     private JLabel lPlaca = new JLabel("Informe a Placa:");
     private JLabel lMarca = new JLabel("Marca:");
     private JLabel lModelo = new JLabel("Modelo:");
@@ -16,7 +17,8 @@ public class ConsultarExcluirPasseio extends JFrame {
     private JLabel lQtdPistoes = new JLabel("Qtd. Pistões:");
     private JLabel lPotencia = new JLabel("Potência:");
 
-    private JTextField textQtdPassageiros = new JTextField();
+    private JTextField textTara = new JTextField();
+    private JTextField textCargaMax = new JTextField();
     private JTextField textPlaca = new JTextField();
     private JTextField textMarca = new JTextField();
     private JTextField textModelo = new JTextField();
@@ -26,7 +28,7 @@ public class ConsultarExcluirPasseio extends JFrame {
     private JTextField textQtdPistoes = new JTextField();
     private JTextField textPotencia = new JTextField();
 
-    private ConsultarExcluirPasseio() {
+    private ConsultarExcluirCarga() {
         iniciar();
     }
 
@@ -36,9 +38,10 @@ public class ConsultarExcluirPasseio extends JFrame {
         setLocationRelativeTo(null);
 
         JPanel panelCampos = new JPanel();
-        panelCampos.setLayout(new GridLayout(9,2, 4, 4));
+        panelCampos.setLayout(new GridLayout(10,2, 4, 4));
         lPlaca.setForeground(Util.COR_VERMELHO);
-        textQtdPassageiros.setEditable(false);
+        textTara.setEditable(false);
+        textCargaMax.setEditable(false);
         textMarca.setEditable(false);
         textModelo.setEditable(false);
         textCor.setEditable(false);
@@ -49,8 +52,10 @@ public class ConsultarExcluirPasseio extends JFrame {
 
         panelCampos.add(lPlaca);
         panelCampos.add(textPlaca);
-        panelCampos.add(lQtdPassageiros);
-        panelCampos.add(textQtdPassageiros);
+        panelCampos.add(lTara);
+        panelCampos.add(textTara);
+        panelCampos.add(lCargaMax);
+        panelCampos.add(textCargaMax);
         panelCampos.add(lMarca);
         panelCampos.add(textMarca);
         panelCampos.add(lModelo);
@@ -105,9 +110,9 @@ public class ConsultarExcluirPasseio extends JFrame {
         pack();
     }
 
-    public static ConsultarExcluirPasseio getConsultarExcluirPasseio(){
+    public static ConsultarExcluirCarga getConsultarExcluirCarga(){
         if (janela== null) {
-            janela = new ConsultarExcluirPasseio();
+            janela = new ConsultarExcluirCarga();
         }
         return janela;
     }
@@ -116,27 +121,28 @@ public class ConsultarExcluirPasseio extends JFrame {
         if (textPlaca.getText().isBlank()) {
             Util.notificar(textPlaca, "Deve informar a placa.");
         } else {
-            Passeio passeio = new Passeio();
-            passeio.setPlaca(textPlaca.getText());
-            passeio = BDVeiculos.getDBVeiculos().buscarPasseio(passeio);
+            Carga carga = new Carga();
+            carga.setPlaca(textPlaca.getText());
+            carga = BDVeiculos.getDBVeiculos().buscarCarga(carga);
 
-            if (passeio == null) {
+            if (carga == null) {
                 Util.notificar(
                         "Veículo não encontrado",
-                        String.format("Não foi encontrado veículo de passeio com esta placa: %s.", textPlaca.getText()),
+                        String.format("Não foi encontrado veículo de carga com esta placa: %s.", textPlaca.getText()),
                         JOptionPane.INFORMATION_MESSAGE
                 );
                 limparCampos();
             } else {
-                textPlaca.setText(passeio.getPlaca());
-                textQtdPassageiros.setText(Integer.toString(passeio.getQtdPassageiros()));
-                textMarca.setText(passeio.getMarca());
-                textModelo.setText(passeio.getModelo());
-                textCor.setText(passeio.getCor());
-                textQtdRodas.setText(Integer.toString(passeio.getQtdRodas()));
-                textVelocidadeMax.setText(Float.toString(passeio.getVelocMax()));
-                textQtdPistoes.setText(Integer.toString(passeio.getMotor().getQtdPist()));
-                textPotencia.setText(Integer.toString(passeio.getMotor().getPotencia()));
+                textPlaca.setText(carga.getPlaca());
+                textTara.setText(Integer.toString(carga.getTara()));
+                textCargaMax.setText(Integer.toString(carga.getCargaMax()));
+                textMarca.setText(carga.getMarca());
+                textModelo.setText(carga.getModelo());
+                textCor.setText(carga.getCor());
+                textQtdRodas.setText(Integer.toString(carga.getQtdRodas()));
+                textVelocidadeMax.setText(Float.toString(carga.getVelocMax()));
+                textQtdPistoes.setText(Integer.toString(carga.getMotor().getQtdPist()));
+                textPotencia.setText(Integer.toString(carga.getMotor().getPotencia()));
             }
         }
     }
@@ -145,24 +151,24 @@ public class ConsultarExcluirPasseio extends JFrame {
         if (textPlaca.getText().isBlank()) {
             Util.notificar(textPlaca, "Deve informar a placa.");
         } else {
-            Passeio passeio = new Passeio();
-            passeio.setPlaca(textPlaca.getText());
-            passeio = BDVeiculos.getDBVeiculos().buscarPasseio(passeio);
+            Carga carga = new Carga();
+            carga.setPlaca(textPlaca.getText());
+            carga = BDVeiculos.getDBVeiculos().buscarCarga(carga);
 
-            if (passeio == null) {
+            if (carga == null) {
                 Util.notificar(
                         "Veiculo não encontrado",
-                        String.format("Não foi encontrado veículo de passeio com esta placa: %s.", textPlaca.getText()),
+                        String.format("Não foi encontrado veículo de carga com esta placa: %s.", textPlaca.getText()),
                         JOptionPane.INFORMATION_MESSAGE
                 );
                 limparCampos();
             } else {
                 int resp = Util.confirmar(
                         "Excluir",
-                        String.format("Tem certeza que deseja excluir o veículo de passeio de placa: %s ?", textPlaca.getText())
+                        String.format("Tem certeza que deseja excluir o veículo de carga de placa: %s ?", textPlaca.getText())
                 );
                 if (resp == 0) {
-                    BDVeiculos.getDBVeiculos().excluirPasseio(passeio);
+                    BDVeiculos.getDBVeiculos().excluirCarga(carga);
                     Util.notificar("Sucesso", "Veiculo excluído com sucesso!", JOptionPane.INFORMATION_MESSAGE);
                     limparCampos();
                 }
@@ -173,7 +179,8 @@ public class ConsultarExcluirPasseio extends JFrame {
 
     private void limparCampos() {
         textPlaca.setText("");
-        textQtdPassageiros.setText("");
+        textTara.setText("");
+        textCargaMax.setText("");
         textMarca.setText("");
         textModelo.setText("");
         textCor.setText("");

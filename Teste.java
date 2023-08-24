@@ -1,17 +1,4 @@
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.util.*;
-import java.util.List;
-
 public class Teste {
-    private static float velocidadePadraoPasseio = 100;
-    private static float velocidadePadraoCarga = 90;
-
     public static void main(String[] args) {
         JanelaPrincipal.getJanelaPrincipal().setVisible(true);
     }

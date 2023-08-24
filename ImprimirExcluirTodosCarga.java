@@ -5,8 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ImprimirExcluirTodosPasseio extends JFrame {
-    private static ImprimirExcluirTodosPasseio janela;
+public class ImprimirExcluirTodosCarga extends JFrame {
+    private static ImprimirExcluirTodosCarga janela;
     private String[] colunas = {
             "Placa",
             "Marca",
@@ -16,12 +16,13 @@ public class ImprimirExcluirTodosPasseio extends JFrame {
             "Veloc. Máx",
             "Qtd. Pist",
             "Potênc.",
-            "Qtd. Passag"
+            "Tara",
+            "Carga Máx"
     };
     private DefaultTableModel model = new DefaultTableModel(colunas, 0);
     private JTable tabela = new JTable(model);
 
-    private ImprimirExcluirTodosPasseio() {
+    private ImprimirExcluirTodosCarga() {
         iniciar();
     }
 
@@ -72,30 +73,31 @@ public class ImprimirExcluirTodosPasseio extends JFrame {
         pack();
     }
 
-    public static ImprimirExcluirTodosPasseio getImprimirExcluirTodosPasseio(){
+    public static ImprimirExcluirTodosCarga getImprimirExcluirTodosCarga(){
         if (janela== null) {
-            janela = new ImprimirExcluirTodosPasseio();
+            janela = new ImprimirExcluirTodosCarga();
         }
         return janela;
     }
 
     private void imprimir() {
-        if (BDVeiculos.getDBVeiculos().getListaPasseio().isEmpty()) {
+        if (BDVeiculos.getDBVeiculos().getListaCarga().isEmpty()) {
             Util.notificar("Lista vazia", "Ainda não tem veículos cadastrados!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             limparTabela();
             DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
-            for (Passeio passeio: BDVeiculos.getDBVeiculos().getListaPasseio()) {
+            for (Carga carga: BDVeiculos.getDBVeiculos().getListaCarga()) {
                 String[] dados = {
-                        passeio.getPlaca(),
-                        passeio.getMarca(),
-                        passeio.getModelo(),
-                        passeio.getCor(),
-                        Integer.toString(passeio.getQtdRodas()),
-                        Float.toString(passeio.getVelocMax()),
-                        Integer.toString(passeio.getMotor().getQtdPist()),
-                        Integer.toString(passeio.getMotor().getPotencia()),
-                        Integer.toString(passeio.getQtdPassageiros())
+                        carga.getPlaca(),
+                        carga.getMarca(),
+                        carga.getModelo(),
+                        carga.getCor(),
+                        Integer.toString(carga.getQtdRodas()),
+                        Float.toString(carga.getVelocMax()),
+                        Integer.toString(carga.getMotor().getQtdPist()),
+                        Integer.toString(carga.getMotor().getPotencia()),
+                        Integer.toString(carga.getTara()),
+                        Integer.toString(carga.getCargaMax())
                 };
                 modelo.addRow(dados);
             }
@@ -105,7 +107,7 @@ public class ImprimirExcluirTodosPasseio extends JFrame {
     }
 
     private void excluir() {
-        if (BDVeiculos.getDBVeiculos().getListaPasseio().isEmpty()) {
+        if (BDVeiculos.getDBVeiculos().getListaCarga().isEmpty()) {
             Util.notificar(
                     "Lista vazia",
                     "Ainda não tem veículos cadastrados!",
@@ -114,13 +116,13 @@ public class ImprimirExcluirTodosPasseio extends JFrame {
         } else {
             int resp = Util.confirmar(
                     "Excluir todos",
-                    "Tem certeza que deseja excluir todos os veículos de passeio?"
+                    "Tem certeza que deseja excluir todos os veículos de carga?"
             );
             if (resp == 0) {
-                BDVeiculos.getDBVeiculos().excluirTodosPasseio();
+                BDVeiculos.getDBVeiculos().excluirTodosCarga();
                 Util.notificar(
                         "Sucesso",
-                        "Todos os veículos de passeio foram excluídos!",
+                        "Todos os veículos de carga foram excluídos!",
                         JOptionPane.INFORMATION_MESSAGE
                 );
                 limparTabela();

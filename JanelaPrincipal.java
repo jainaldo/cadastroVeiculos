@@ -83,6 +83,6 @@ public class JanelaPrincipal extends JFrame {
     }
 
     private void menuCarga(){
-//        JanelaMenuPasseio.getJanelaMenuPasseio().setVisible(true);
+        MenuCarga.getMenuCarga().setVisible(true);
     }
 }
