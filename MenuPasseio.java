@@ -84,12 +84,35 @@ public class MenuPasseio extends JFrame {
             }
         });
 
+        JLabel linkSair = new JLabel();
+        linkSair.setIcon(Util.ICON_VERMELHO);
+        linkSair.setText("Sair");
+        linkSair.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        linkSair.setIconTextGap(10);
+        linkSair.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                sair();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Util.mudaCorLink(linkSair, Util.COR_VERMELHO, Cursor.HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                Util.mudaCorLink(linkSair, null, Cursor.DEFAULT_CURSOR);
+            }
+        });
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4,1));
         panel.setBorder(new EmptyBorder(20, 40, 20, 40 ));
         panel.add(linkCadastrar);
         panel.add(linkConsultarExcluir);
         panel.add(linkImprimirExcluirTodos);
+        panel.add(linkSair);
         add(panel);
     }
 
@@ -110,5 +133,12 @@ public class MenuPasseio extends JFrame {
 
     private void imprimirExcluirTodos() {
         ImprimirExcluirTodosPasseio.getImprimirExcluirTodosPasseio().setVisible(true);
+    }
+
+    private void sair(){
+        int resp = Util.confirmar("Saida","Deseja realmente sair?");
+        if(resp == 0){
+            dispose();
+        }
     }
 }
