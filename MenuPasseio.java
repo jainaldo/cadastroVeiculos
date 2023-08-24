@@ -12,7 +12,7 @@ public class MenuPasseio extends JFrame {
 
     private void iniciar() {
         int largura = 500;
-        int altura = 300;
+        int altura = 260;
         setTitle("Veículos de Passeio");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -31,14 +31,34 @@ public class MenuPasseio extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                linkCadastrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                linkCadastrar.setForeground(Util.COR_AZUL);
+                Util.mudaCorLink(linkCadastrar, Util.COR_AZUL, Cursor.HAND_CURSOR);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                linkCadastrar.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                linkCadastrar.setForeground(null);
+                Util.mudaCorLink(linkCadastrar, null, Cursor.DEFAULT_CURSOR);
+            }
+        });
+
+        JLabel linkConsultarExcluir = new JLabel();
+        linkConsultarExcluir.setIcon(Util.ICON_AZUL);
+        linkConsultarExcluir.setText("Consultar / Excluir pela placa");
+        linkConsultarExcluir.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        linkConsultarExcluir.setIconTextGap(10);
+        linkConsultarExcluir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                consultarExcluir();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Util.mudaCorLink(linkConsultarExcluir, Util.COR_AZUL, Cursor.HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                Util.mudaCorLink(linkConsultarExcluir, null, Cursor.DEFAULT_CURSOR);
             }
         });
 
@@ -46,6 +66,7 @@ public class MenuPasseio extends JFrame {
         panel.setLayout(new GridLayout(4,1));
         panel.setBorder(new EmptyBorder(20, 40, 20, 40 ));
         panel.add(linkCadastrar);
+        panel.add(linkConsultarExcluir);
         add(panel);
     }
 
@@ -58,5 +79,9 @@ public class MenuPasseio extends JFrame {
 
     private void cadastrar() {
         CadastroPasseio.getCadastroPasseio().setVisible(true);
+    }
+
+    private void consultarExcluir() {
+        ConsultarExcluirPasseio.getConsultarExcluirPasseio().setVisible(true);
     }
 }

@@ -105,24 +105,24 @@ public class CadastroPasseio extends JFrame {
     }
 
     private void cadastrarPasseio() {
-        if (textQtdPassageiros.getText().isBlank() || !numeroValido(textQtdPassageiros.getText())) {
-            notificar(textQtdPassageiros, "Deve informar um número para Qtd. Passageiros");
+        if (textQtdPassageiros.getText().isBlank() || !Util.numeroValido(textQtdPassageiros.getText())) {
+            Util.notificar(textQtdPassageiros, "Deve informar um número para Qtd. Passageiros");
         } else if (textPlaca.getText().isBlank()) {
-            notificar(textPlaca, "Deve informar a Placa.");
+            Util.notificar(textPlaca, "Deve informar a Placa.");
         } else if (textMarca.getText().isBlank()) {
-            notificar(textMarca, "Deve informar a Marca.");
+            Util.notificar(textMarca, "Deve informar a Marca.");
         } else if (textModelo.getText().isBlank()) {
-            notificar(textModelo, "Deve informar o Modelo.");
+            Util.notificar(textModelo, "Deve informar o Modelo.");
         } else if (textCor.getText().isBlank()) {
-            notificar(textCor, "Deve informar a Cor.");
-        } else if (textQtdRodas.getText().isBlank() || !numeroValido(textQtdRodas.getText())) {
-            notificar(textQtdRodas, "Deve informar um número para Qtd. Rodas.");
-        } else if (textVelocidadeMax.getText().isBlank() || !floatValido(textVelocidadeMax.getText())) {
-            notificar(textVelocidadeMax, "Deve informar um número para Velocidade Max.");
-        } else if (textQtdPistoes.getText().isBlank() || !numeroValido(textQtdPistoes.getText())) {
-            notificar(textQtdPistoes, "Deve informar um número para Qtd. Pistões.");
-        } else if (textPotencia.getText().isBlank() || !numeroValido(textPotencia.getText())) {
-            notificar(textPotencia, "Deve informar um número para Potência");
+            Util.notificar(textCor, "Deve informar a Cor.");
+        } else if (textQtdRodas.getText().isBlank() || !Util.numeroValido(textQtdRodas.getText())) {
+            Util.notificar(textQtdRodas, "Deve informar um número para Qtd. Rodas.");
+        } else if (textVelocidadeMax.getText().isBlank() || !Util.floatValido(textVelocidadeMax.getText())) {
+            Util.notificar(textVelocidadeMax, "Deve informar um número para Velocidade Max.");
+        } else if (textQtdPistoes.getText().isBlank() || !Util.numeroValido(textQtdPistoes.getText())) {
+            Util.notificar(textQtdPistoes, "Deve informar um número para Qtd. Pistões.");
+        } else if (textPotencia.getText().isBlank() || !Util.numeroValido(textPotencia.getText())) {
+            Util.notificar(textPotencia, "Deve informar um número para Potência");
         } else {
             try {
                 Passeio novoPasseio = new Passeio();
@@ -143,44 +143,17 @@ public class CadastroPasseio extends JFrame {
                     } catch (VelocException e) {
                         System.out.println("Erro no Sistema");
                     }
-                    notificar("Atenção", ve.getMessage(), JOptionPane.WARNING_MESSAGE);
+                    Util.notificar("Atenção", ve.getMessage(), JOptionPane.WARNING_MESSAGE);
                 }
 
                 BDVeiculos.getDBVeiculos().adicionarPasseio(novoPasseio);
-                notificar("Sucesso", "Veiculo cadastrado com sucesso!", JOptionPane.INFORMATION_MESSAGE);
+                Util.notificar("Sucesso", "Veiculo cadastrado com sucesso!", JOptionPane.INFORMATION_MESSAGE);
                 limparCampos();
             } catch (VeicExistException ve) {
-                notificar("Placa duplicada", ve.getMessage(), JOptionPane.ERROR_MESSAGE);
+                Util.notificar("Placa duplicada", ve.getMessage(), JOptionPane.ERROR_MESSAGE);
                 textPlaca.setText("");
                 textPlaca.requestFocus();
             }
-        }
-    }
-
-    private void notificar(JTextField campo, String mensagem) {
-        JOptionPane.showMessageDialog(null, mensagem, "Campo inválido", JOptionPane.ERROR_MESSAGE);
-        campo.requestFocus();
-    }
-
-    private void notificar(String titulo, String mensagem, int tipoMensagem) {
-        JOptionPane.showMessageDialog(null, mensagem, titulo, tipoMensagem);
-    }
-
-    private boolean numeroValido(String texto) {
-        try {
-            Integer.parseInt(texto);
-            return true;
-        }catch (NumberFormatException e){
-            return false;
-        }
-    }
-
-    private boolean floatValido(String texto) {
-        try {
-            Float.parseFloat(texto);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
         }
     }
 
@@ -198,13 +171,7 @@ public class CadastroPasseio extends JFrame {
     }
 
     private void sair() {
-        int resp = JOptionPane.showConfirmDialog(
-                null,
-                "Deseja realmente sair?",
-                "Saida",
-                JOptionPane.YES_NO_OPTION
-        );
-
+        int resp = Util.confirmar("Saida","Deseja realmente sair?");
         if(resp == 0){
             limparCampos();
             dispose();

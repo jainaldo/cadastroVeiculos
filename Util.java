@@ -20,4 +20,40 @@ public class Util {
         return new ImageIcon(img);
     }
 
+    public static boolean floatValido(String texto) {
+        try {
+            Float.parseFloat(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean numeroValido(String texto) {
+        try {
+            Integer.parseInt(texto);
+            return true;
+        }catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static void notificar(JTextField campo, String mensagem) {
+        JOptionPane.showMessageDialog(null, mensagem, "Campo inválido", JOptionPane.ERROR_MESSAGE);
+        campo.requestFocus();
+    }
+
+    public static void notificar(String titulo, String mensagem, int tipoMensagem) {
+        JOptionPane.showMessageDialog(null, mensagem, titulo, tipoMensagem);
+    }
+
+    public static int confirmar(String titulo, String mensagem) {
+        return JOptionPane.showConfirmDialog(null, mensagem, titulo, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    }
+
+    public static void mudaCorLink(JLabel link, Color cor, int tipoCursor) {
+        link.setCursor(Cursor.getPredefinedCursor(tipoCursor));
+        link.setForeground(cor);
+    }
+
 }

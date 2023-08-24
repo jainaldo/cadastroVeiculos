@@ -32,14 +32,12 @@ public class JanelaPrincipal extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                linkPasseio.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                linkPasseio.setForeground(Util.COR_AZUL);
+                Util.mudaCorLink(linkPasseio, Util.COR_AZUL, Cursor.HAND_CURSOR);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                linkPasseio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                linkPasseio.setForeground(null);
+                Util.mudaCorLink(linkPasseio, null, Cursor.DEFAULT_CURSOR);
             }
         });
 
@@ -56,14 +54,12 @@ public class JanelaPrincipal extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                linkCarga.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                linkCarga.setForeground(Util.COR_VERDE);
+                Util.mudaCorLink(linkCarga, Util.COR_VERDE, Cursor.HAND_CURSOR);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                linkCarga.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                linkCarga.setForeground(null);
+                Util.mudaCorLink(linkCarga, null, Cursor.DEFAULT_CURSOR);
             }
         });
 
